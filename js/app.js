@@ -45,15 +45,16 @@ function onPlayerStateChange(event) {
 // Função global para API do YouTube
 window.onYouTubeIframeAPIReady = function () {
   player = new YT.Player('player', {
-    height: '360', // valor numérico padrão
-    width: '640',  // valor numérico padrão
+    height: '360',
+    width: '640',
     videoId: '8tWMCGRWr-Y',
     playerVars: {
       autoplay: 1,
       modestbranding: 1,
       playsinline: 1,
       listType: 'playlist',
-      list: 'PLX_YaKXOr1s6u6O3srDxVJn720Zi2RRC5'
+      list: 'PLX_YaKXOr1s6u6O3srDxVJn720Zi2RRC5',
+      origin: window.location.origin
     },
     events: {
       onReady: onPlayerReady,
