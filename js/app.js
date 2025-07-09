@@ -18,7 +18,6 @@ let playerPronto = false; // flag para saber se o player está pronto
 function onPlayerReady(event) {
   playerPronto = true;
   atualizarInfoVideo(player.getVideoData().video_id);
-  monitorarBotaoPularAnuncio(); // inicia monitoramento
 }
 
 function onPlayerStateChange(event) {
