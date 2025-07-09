@@ -1,5 +1,3 @@
-// Simulação de player de áudio com YouTube (modo somente áudio)
-
 // Função para buscar dados do vídeo atual usando apenas a API do player
 function atualizarInfoVideo(videoId) {
   // Obtém informações básicas do vídeo pelo próprio player
