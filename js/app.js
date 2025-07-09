@@ -1,21 +1,13 @@
-const YOUTUBE_API_KEY = CONFIG.YOUTUBE_API_KEY;
-// Função para buscar dados do vídeo atual
-async function atualizarInfoVideo(videoId) {
-  try {
-    const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${YOUTUBE_API_KEY}`;
-    const resp = await fetch(url);
-    const data = await resp.json();
-    if (data.items && data.items.length > 0) {
-      const snippet = data.items[0].snippet;
-      document.querySelector('.music-title').textContent = snippet.title;
-      document.querySelector('.artist-name').textContent = snippet.channelTitle;
-      document.querySelector('.cover').src = snippet.thumbnails.high.url;
-    }
-  } catch (e) {
-    // fallback visual
-    document.querySelector('.music-title').textContent = 'Desconhecido';
-    document.querySelector('.artist-name').textContent = '';
-    document.querySelector('.cover').src = 'assets/bg.webp';
+// Simulação de player de áudio com YouTube (modo somente áudio)
+
+// Função para buscar dados do vídeo atual usando apenas a API do player
+function atualizarInfoVideo(videoId) {
+  // Obtém informações básicas do vídeo pelo próprio player
+  if (player && typeof player.getVideoData === 'function') {
+    const data = player.getVideoData();
+    document.querySelector('.music-title').textContent = data.title || 'Desconhecido';
+    document.querySelector('.artist-name').textContent = data.author || '';
+    // Mantém a capa como está, pois não há thumbnail via player API
   }
 }
 
@@ -175,6 +167,18 @@ function monitorarBotaoPularAnuncio() {
   window.onPlayerStateChange = function(event) {
     if (event.data === YT.PlayerState.PLAYING) {
       mostrarBotaoTemporariamente();
+    }
+    if (typeof window._originalOnPlayerStateChange === 'function') {
+      window._originalOnPlayerStateChange(event);
+    }
+  };
+
+  // Salva o original e substitui
+  if (!window._originalOnPlayerStateChange) {
+    window._originalOnPlayerStateChange = onPlayerStateChange;
+    onPlayerStateChange = window.onPlayerStateChange;
+  }
+}
     }
     if (typeof window._originalOnPlayerStateChange === 'function') {
       window._originalOnPlayerStateChange(event);
