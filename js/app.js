@@ -1,8 +1,4 @@
-// Simulação de player de áudio com YouTube (modo somente áudio)
-
-// Substitua por sua chave de API do YouTube Data v3
-const YOUTUBE_API_KEY = 'AIzaSyBF0Ht7_rZ1pFd51qNDP-QW1V_6dfItwS8';
-
+const YOUTUBE_API_KEY = CONFIG.YOUTUBE_API_KEY;
 // Função para buscar dados do vídeo atual
 async function atualizarInfoVideo(videoId) {
   try {
