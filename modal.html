@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Playlist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html, body {
+      margin: 0; padding: 0; box-sizing: border-box;
+      width: 100vw; height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: #181818;
+      color: #fff;
+    }
+    .modal-content {
+      background: #222;
+      border-radius: 1rem;
+      margin: 0 auto;
+      padding: 2rem;
+      box-sizing: border-box;
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 700px) {
+      .modal-content {
+        width: 50vw;
+        height: 90vh;
+        max-width: 50vw;
+        max-height: 90vh;
+        margin-top: 5vh;
+        border-radius: 2rem;
+      }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    .search-bar {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1.4rem;
+      border-radius: 0.5rem;
+      border: none;
+      margin-bottom: 1rem;
+      background: #333;
+      color: #fff;
+    }
+    .playlist-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .playlist-item {
+      background: #333;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: background 0.2s;
+    }
+    .playlist-item:hover {
+      background: #444;
+    }
+    .playlist-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 0.5rem;
+      object-fit: cover;
+      background: #222;
+    }
+    .playlist-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .playlist-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+    }
+    .playlist-artist {
+      font-size: 1.1rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Playlist</h2>
+      <button class="close-btn" title="Fechar" onclick="window.parent.postMessage('close-modal','*')">&times;</button>
+    </div>
+    <input type="text" class="search-bar" placeholder="Buscar na playlist..." oninput="filtrarPlaylist()" />
+    <div class="playlist-list" id="playlist-list">
+      <!-- Itens da playlist serão inseridos via JS -->
+    </div>
+  </div>
+  <script>
+    // IDs dos vídeos da playlist (exemplo)
+    const playlist = [
+      { id: '8tWMCGRWr-Y', title: 'Música 1', artist: 'Artista 1', thumb: 'https://img.youtube.com/vi/8tWMCGRWr-Y/mqdefault.jpg' },
+      { id: 'eT5_neXR3FI', title: 'Música 2', artist: 'Artista 2', thumb: 'https://img.youtube.com/vi/eT5_neXR3FI/mqdefault.jpg' },
+      { id: 'QH2-TGUlwu4', title: 'Música 3', artist: 'Artista 3', thumb: 'https://img.youtube.com/vi/QH2-TGUlwu4/mqdefault.jpg' }
+      // Adicione mais vídeos conforme necessário
+    ];
+
+    function renderPlaylist(filtro = '') {
+      const list = document.getElementById('playlist-list');
+      list.innerHTML = '';
+      playlist
+        .filter(item =>
+          item.title.toLowerCase().includes(filtro.toLowerCase()) ||
+          item.artist.toLowerCase().includes(filtro.toLowerCase())
+        )
+        .forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'playlist-item';
+          div.onclick = () => {
+            window.parent.postMessage({ type: 'select-video', videoId: item.id }, '*');
+          };
+          div.innerHTML = `
+            <img class="playlist-thumb" src="${item.thumb}" alt="thumb" />
+            <div class="playlist-info">
+              <span class="playlist-title">${item.title}</span>
+              <span class="playlist-artist">${item.artist}</span>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+    }
+
+    function filtrarPlaylist() {
+      const filtro = document.querySelector('.search-bar').value;
+      renderPlaylist(filtro);
+    }
+
+    // Inicializa a lista ao abrir o modal
+    renderPlaylist();
+  </script>
+</body>
+</html>

@@ -109,3 +109,41 @@ toggleBtn.addEventListener('click', () => {
   const isDark = document.documentElement.classList.toggle('dark-mode');
   setTheme(isDark);
 });
+
+const openPlaylistBtn = document.getElementById('open-playlist');
+
+openPlaylistBtn.addEventListener('click', () => {
+  // Cria o iframe do modal se não existir
+  let modal = document.getElementById('playlist-modal');
+  if (!modal) {
+    modal = document.createElement('iframe');
+    modal.id = 'playlist-modal';
+    modal.src = 'modal.html';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.zIndex = '10000';
+    modal.style.border = 'none';
+    modal.style.background = 'rgba(0,0,0,0.5)';
+    modal.style.transition = 'opacity 0.2s';
+    document.body.appendChild(modal);
+  } else {
+    modal.style.display = 'block';
+  }
+
+  // Fecha o modal ao receber mensagem do iframe
+  window.addEventListener('message', function handler(e) {
+    if (e.data === 'close-modal') {
+      modal.style.display = 'none';
+      window.removeEventListener('message', handler);
+    }
+    // Troca de vídeo na playlist
+    if (e.data && e.data.type === 'select-video' && e.data.videoId) {
+      player.loadVideoById(e.data.videoId);
+      modal.style.display = 'none';
+      window.removeEventListener('message', handler);
+    }
+  });
+});
