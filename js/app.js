@@ -44,20 +44,9 @@ function onPlayerStateChange(event) {
 
 // Função global para API do YouTube
 window.onYouTubeIframeAPIReady = function () {
-  const playerDiv = document.getElementById('player');
-  if (playerDiv) {
-    playerDiv.style.width = '100%';
-    playerDiv.style.height = '100%';
-    playerDiv.style.position = 'absolute';
-    playerDiv.style.top = '0';
-    playerDiv.style.left = '0';
-    playerDiv.style.zIndex = '2';
-    playerDiv.style.background = 'black';
-  }
-
   player = new YT.Player('player', {
-    height: '100%',
-    width: '100%',
+    height: '360', // valor numérico padrão
+    width: '640',  // valor numérico padrão
     videoId: '8tWMCGRWr-Y',
     playerVars: {
       autoplay: 1,
@@ -122,72 +111,3 @@ toggleBtn.addEventListener('click', () => {
   const isDark = document.documentElement.classList.toggle('dark-mode');
   setTheme(isDark);
 });
-
-/**
- * Exibe um botão customizado para "Pular anúncio" por alguns segundos após o início do vídeo.
- * Observação: Não é possível pular anúncios do YouTube via API pública, este botão é apenas ilustrativo.
- */
-function monitorarBotaoPularAnuncio() {
-  let skipBtn = document.getElementById('custom-skip-ad');
-  if (!skipBtn) {
-    skipBtn = document.createElement('button');
-    skipBtn.id = 'custom-skip-ad';
-    skipBtn.textContent = '⏭️ Pular anúncio';
-    skipBtn.style.position = 'fixed';
-    skipBtn.style.bottom = '20px';
-    skipBtn.style.left = '20px';
-    skipBtn.style.zIndex = '9999';
-    skipBtn.style.padding = '1em 1.5em';
-    skipBtn.style.fontSize = '1.6rem';
-    skipBtn.style.background = 'var(--bg-secondary)';
-    skipBtn.style.color = 'var(--text)';
-    skipBtn.style.border = 'none';
-    skipBtn.style.borderRadius = '0.5rem';
-    skipBtn.style.cursor = 'pointer';
-    skipBtn.style.display = 'none';
-    document.body.appendChild(skipBtn);
-
-    skipBtn.addEventListener('click', () => {
-      skipBtn.style.display = 'none';
-    });
-  }
-
-  // Função para exibir o botão por 7 segundos após o início do vídeo
-  function mostrarBotaoTemporariamente() {
-    skipBtn.style.display = 'block';
-    setTimeout(() => {
-      skipBtn.style.display = 'none';
-    }, 7000);
-  }
-
-  // Exibe o botão sempre que um novo vídeo começa a tocar
-  if (window._skipAdListenerAdded) return;
-  window._skipAdListenerAdded = true;
-
-  window.onPlayerStateChange = function(event) {
-    if (event.data === YT.PlayerState.PLAYING) {
-      mostrarBotaoTemporariamente();
-    }
-    if (typeof window._originalOnPlayerStateChange === 'function') {
-      window._originalOnPlayerStateChange(event);
-    }
-  };
-
-  // Salva o original e substitui
-  if (!window._originalOnPlayerStateChange) {
-    window._originalOnPlayerStateChange = onPlayerStateChange;
-    onPlayerStateChange = window.onPlayerStateChange;
-  }
-}
-    }
-    if (typeof window._originalOnPlayerStateChange === 'function') {
-      window._originalOnPlayerStateChange(event);
-    }
-  };
-
-  // Salva o original e substitui
-  if (!window._originalOnPlayerStateChange) {
-    window._originalOnPlayerStateChange = onPlayerStateChange;
-    onPlayerStateChange = window.onPlayerStateChange;
-  }
-}
