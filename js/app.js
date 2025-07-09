@@ -44,7 +44,7 @@ window.onYouTubeIframeAPIReady = function () {
   player = new YT.Player('player', {
     height: '360',
     width: '640',
-    videoId: '8tWMCGRWr-Y',
+    videoId: '3ZdbHUolTi8',
     playerVars: {
       autoplay: 1,
       modestbranding: 1,
@@ -64,25 +64,59 @@ window.onYouTubeIframeAPIReady = function () {
 const playBtn = document.getElementById('play');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
+const shuffleBtn = document.getElementById('shuffle');
+const repeatBtn = document.getElementById('repeat');
+const openPlaylistBtn = document.getElementById('open-playlist');
 
+// Estados dos modos
+let shuffleAtivo = false;
+let repeatAtivo = false;
+
+// Play/Pause
 playBtn.addEventListener('click', () => {
   if (!player || !playerPronto) return;
   const state = player.getPlayerState();
   if (state === YT.PlayerState.PLAYING) {
     player.pauseVideo();
-    // O texto do botão será atualizado pelo onPlayerStateChange
   } else {
     player.playVideo();
-    // O texto do botão será atualizado pelo onPlayerStateChange
   }
 });
 
-prevBtn.addEventListener('click', () => {
-  if (player && playerPronto) player.previousVideo();
+// Próximo vídeo
+nextBtn.addEventListener('click', () => {
+  if (!player || !playerPronto) return;
+  if (typeof player.nextVideo === 'function') {
+    player.nextVideo();
+  }
 });
 
-nextBtn.addEventListener('click', () => {
-  if (player && playerPronto) player.nextVideo();
+// Vídeo anterior
+prevBtn.addEventListener('click', () => {
+  if (!player || !playerPronto) return;
+  if (typeof player.previousVideo === 'function') {
+    player.previousVideo();
+  }
+});
+
+// Shuffle (aleatório)
+shuffleBtn.addEventListener('click', () => {
+  if (!player || !playerPronto) return;
+  shuffleAtivo = !shuffleAtivo;
+  if (typeof player.setShuffle === 'function') {
+    player.setShuffle(shuffleAtivo);
+  }
+  shuffleBtn.style.color = shuffleAtivo ? 'var(--text-secondary)' : 'var(--text)';
+});
+
+// Repeat (repetir música atual)
+repeatBtn.addEventListener('click', () => {
+  if (!player || !playerPronto) return;
+  repeatAtivo = !repeatAtivo;
+  if (typeof player.setLoop === 'function') {
+    player.setLoop(repeatAtivo);
+  }
+  repeatBtn.style.color = repeatAtivo ? 'var(--text-secondary)' : 'var(--text)';
 });
 
 // TEMA
@@ -109,8 +143,6 @@ toggleBtn.addEventListener('click', () => {
   const isDark = document.documentElement.classList.toggle('dark-mode');
   setTheme(isDark);
 });
-
-const openPlaylistBtn = document.getElementById('open-playlist');
 
 openPlaylistBtn.addEventListener('click', () => {
   // Cria o iframe do modal se não existir
