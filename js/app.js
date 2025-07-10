@@ -58,6 +58,7 @@ window.onYouTubeIframeAPIReady = function () {
       onStateChange: onPlayerStateChange
     }
   });
+  configurarOverlayIframe();
 };
 
 // Controles
@@ -180,68 +181,54 @@ openPlaylistBtn.addEventListener('click', () => {
   });
 });
 
-// --- Patrulha global de links para YouTube ---
+// Após o player ser criado, configure a overlay
+function configurarOverlayIframe() {
+  const overlay = document.querySelector('.iframe-overlay');
+  if (!overlay) return;
 
-function isYouTubeLink(el) {
-  return el.tagName === 'A' && el.href && el.href.match(/^https?:\/\/(www\.)?youtube\.com/);
-}
+  // Limpa overlay
+  overlay.innerHTML = '';
 
-// Bloqueio para clique normal e Ctrl+Click/botão do meio
-function bloquearLinksYouTube(e) {
-  let el = e.target;
-  while (el && el !== document.body) {
-    if (el.tagName === 'A') {
-      if (isYouTubeLink(el)) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert('Abertura de links do YouTube bloqueada!');
-        return false;
-      }
-      break;
+  // Cria áreas "furadas" para os botões do YouTube
+  const skipArea = document.createElement('div');
+  skipArea.className = 'skip-area';
+  overlay.appendChild(skipArea);
+
+  const settingsArea = document.createElement('div');
+  settingsArea.className = 'settings-area';
+  overlay.appendChild(settingsArea);
+
+  // O overlay bloqueia tudo, exceto as áreas acima
+  // Permite clique apenas nas áreas dos botões
+  overlay.addEventListener('pointerdown', function(e) {
+    const { left, top, width, height } = overlay.getBoundingClientRect();
+    const x = e.clientX - left;
+    const y = e.clientY - top;
+
+    // Área do botão de pular anúncio (ajuste se necessário)
+    const skipBtn = {
+      x0: overlay.offsetWidth - 120,
+      y0: overlay.offsetHeight - 50,
+      x1: overlay.offsetWidth,
+      y1: overlay.offsetHeight
+    };
+    // Área do botão de configuração (ajuste se necessário)
+    const settingsBtn = {
+      x0: overlay.offsetWidth - 60,
+      y0: 0,
+      x1: overlay.offsetWidth,
+      y1: 60
+    };
+
+    // Permite clique apenas nas áreas dos botões
+    const inSkip = x >= skipBtn.x0 && x <= skipBtn.x1 && y >= skipBtn.y0 && y <= skipBtn.y1;
+    const inSettings = x >= settingsBtn.x0 && x <= settingsBtn.x1 && y >= settingsBtn.y0 && y <= settingsBtn.y1;
+
+    if (!(inSkip || inSettings)) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
     }
-    el = el.parentElement;
-  }
+    // Se estiver nas áreas permitidas, deixa passar o evento
+  }, true);
 }
-
-// Clique esquerdo
-document.addEventListener('click', bloquearLinksYouTube, true);
-// Clique do meio ou Ctrl+Click
-document.addEventListener('auxclick', bloquearLinksYouTube, true);
-
-// 2. Patch do window.open para bloquear tentativas de abrir YouTube
-(function () {
-  const originalOpen = window.open;
-  window.open = function (url, ...args) {
-    if (typeof url === 'string' && url.match(/^https?:\/\/(www\.)?youtube\.com/)) {
-      alert('window.open para YouTube bloqueado!');
-      return null;
-    }
-    return originalOpen.apply(window, arguments);
-  };
-})();
-
-// 3. MutationObserver para detectar inserção de novos links YouTube
-const observer = new MutationObserver(mutations => {
-  mutations.forEach(mutation => {
-    mutation.addedNodes.forEach(node => {
-      if (
-        node.nodeType === 1 &&
-        node.tagName === 'A' &&
-        node.href &&
-        node.href.match(/^https?:\/\/(www\.)?youtube\.com/)
-      ) {
-        node.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          alert('Link do YouTube bloqueado (inserido dinamicamente)!');
-        }, true);
-        node.addEventListener('auxclick', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          alert('Link do YouTube bloqueado (inserido dinamicamente)!');
-        }, true);
-      }
-    });
-  });
-});
-observer.observe(document.body, { childList: true, subtree: true });
