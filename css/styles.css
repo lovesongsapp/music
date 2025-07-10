@@ -214,10 +214,10 @@ body {
 .iframe-overlay .skip-area {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 10px;
   width: 130px;
-  height: 60px;
-
+  height: 50px;
   pointer-events: auto;
+  border-radius: 20px;
   z-index: 11;
 }
