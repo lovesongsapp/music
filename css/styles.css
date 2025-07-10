@@ -183,7 +183,7 @@ body {
   width: 100%; height: 100%;
   z-index: 10;
   background: rgba(0, 0, 0, 0.255); /* fundo semi-transparente */
-  pointer-events: none; /* bloqueia tudo por padrão */
+  pointer-events: auto; /* permite eventos na overlay */
 }
 
 /* Furo canto superior direito (configurações) */
@@ -193,7 +193,8 @@ body {
   top: 0;
   width: 50px;
   height: 50px;
- background: rgba(225, 255, 0, 0.282);
+  background: rgba(225, 255, 0, 0.282);
+  pointer-events: auto;
 }
 /* Furo canto inferior direito (pular anúncio) */
 .iframe-overlay .skip-area {
@@ -201,6 +202,7 @@ body {
   right: 0;
   bottom: 0;
   width: 130px;
-  height: 80px;
+  height: 60px;
   background: rgba(225, 255, 0, 0.282);
+  pointer-events: auto;
 }
