@@ -193,7 +193,7 @@ body {
   top: 0;
   width: 50px;
   height: 50px;
-  background: rgba(225, 255, 0, 0.282);
+  /*background: rgba(225, 255, 0, 0.282);*/
   pointer-events: auto;
 }
 /* Furo canto inferior direito (pular anúncio) */
@@ -203,6 +203,6 @@ body {
   bottom: 0;
   width: 130px;
   height: 60px;
-  background: rgba(225, 255, 0, 0.282);
+  /*background: rgba(225, 255, 0, 0.282);*/
   pointer-events: auto;
 }
