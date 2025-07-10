@@ -202,8 +202,8 @@ body {
 /* canto superior direito (configurações) */
 .iframe-overlay .settings-area {
  position: absolute;
-  left: 18px;
-  top: 15px;
+  left: 12px;
+  top: 12px;
   width: 40px;
   height: 40px;
   pointer-events: auto;
