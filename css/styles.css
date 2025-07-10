@@ -201,12 +201,11 @@ body {
 }
 /* canto superior direito (configurações) */
 .iframe-overlay .settings-area {
-  position: absolute;
-  right: 20px;
-  top: 60px;
-  width: 30px;
-  height: 30px;
- 
+ position: absolute;
+  left: 18px;
+  top: 15px;
+  width: 40px;
+  height: 40px;
   pointer-events: auto;
   z-index: 11;
 }
