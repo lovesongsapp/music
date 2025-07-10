@@ -191,9 +191,9 @@ body {
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 100px;
+  width: 50px;
   height: 50px;
-  background: rgba(225, 255, 0, 0.367);
+  background: rgba(225, 255, 0, 0.282);
 }
 
 /* Furo canto superior direito (configurações) */
@@ -201,7 +201,7 @@ body {
   position: absolute;
   right: 0;
   top: 0;
-  width: 100px;
-  height: 50px;
- background: rgba(225, 255, 0, 0.367);
+  width: 130px;
+  height: 80px;
+ background: rgba(225, 255, 0, 0.282);
 }
