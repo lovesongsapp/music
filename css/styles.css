@@ -186,22 +186,21 @@ body {
   pointer-events: none; /* bloqueia tudo por padrão */
 }
 
-/* Furo canto inferior direito (pular anúncio) */
-.iframe-overlay .skip-area {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 50px;
-  height: 50px;
-  background: rgba(225, 255, 0, 0.282);
-}
-
 /* Furo canto superior direito (configurações) */
 .iframe-overlay .settings-area {
   position: absolute;
   right: 0;
   top: 0;
+  width: 50px;
+  height: 50px;
+ background: rgba(225, 255, 0, 0.282);
+}
+/* Furo canto inferior direito (pular anúncio) */
+.iframe-overlay .skip-area {
+  position: absolute;
+  right: 0;
+  bottom: 0;
   width: 130px;
   height: 80px;
- background: rgba(225, 255, 0, 0.282);
+  background: rgba(225, 255, 0, 0.282);
 }
