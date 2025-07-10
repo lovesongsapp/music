@@ -48,7 +48,6 @@ window.onYouTubeIframeAPIReady = function () {
         modestbranding: 1,
         rel: 0,
         playsinline: 1,
-        mute: 1,
         origin: window.location.origin,
         listType: 'playlist',
         list: 'PLX_YaKXOr1s6u6O3srDxVJn720Zi2RRC5'
