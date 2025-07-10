@@ -133,8 +133,8 @@ body {
 /* Tema claro/escuro */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #111;
-    --bg-secondary: #222;
+    --bg: #0f0f0f;
+    --bg-secondary: #0f0f0f;
     --text: #fff;
     --text-secondary: #aaa;
   }
@@ -172,16 +172,16 @@ body {
 }
 
 .dark-mode {
-  --bg: #111;
-  --bg-secondary: #222;
+  --bg: #0f0f0f;
+  --bg-secondary: #0f0f0f;
   --text: #fff;
   --text-secondary: #aaa;
 }
 
 .dark-mode,
 .dark-mode body {
-  --bg: #111 !important;
-  --bg-secondary: #222 !important;
+  --bg: #0f0f0f !important;
+  --bg-secondary: #0f0f0f !important;
   --text: #fff !important;
   --text-secondary: #aaa !important;
   background-color: var(--bg) !important;
