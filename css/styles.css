@@ -200,7 +200,7 @@ body {
   z-index: 10;
 }
 /* canto superior direito (configurações) */
-.iframe-overlay .settings-area {
+.iframe-overlay .logo {
  position: absolute;
   left: 12px;
   top: 12px;
@@ -208,7 +208,7 @@ body {
   height: 40px;
   pointer-events: none;
   z-index: 11;
-  background: rgba(0,0,0,0.2);
+ 
 }
 
 /* canto inferior direito (pular anúncio) */
