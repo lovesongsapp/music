@@ -1,5 +1,7 @@
 /* Reset básico */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -34,11 +36,13 @@ body {
   align-items: center;
   background: var(--bg-secondary);
   width: 100%;
-  aspect-ratio: 1 / 1; /* força proporção quadrada */
+  aspect-ratio: 1 / 1;
+  /* força proporção quadrada */
   max-width: 100vw;
   max-height: 100vw;
   position: relative;
-  overflow: hidden; /* garante que nada saia do quadrado */
+  overflow: hidden;
+  /* garante que nada saia do quadrado */
 }
 
 #player {
@@ -54,10 +58,13 @@ body {
 
 .cover {
   width: 100%;
-  height: calc(100% + 140px); /* aumenta a altura para cobrir as tarjas */
-  object-fit: cover; /* cobre toda a área, cortando se necessário */
+  height: calc(100% + 140px);
+  /* aumenta a altura para cobrir as tarjas */
+  object-fit: cover;
+  /* cobre toda a área, cortando se necessário */
   position: absolute;
-  top: -70px; /* centraliza verticalmente, escondendo as tarjas */
+  top: -70px;
+  /* centraliza verticalmente, escondendo as tarjas */
   left: 0;
   z-index: 1;
 }
@@ -104,21 +111,23 @@ body {
     max-width: 100%;
   }
 
-  .cover-section, .info-section {
+  .cover-section,
+  .info-section {
     flex: 1;
   }
+
   #theme-toggle {
-  font-size: 1.6rem;
-  padding: 0.5em;
-  border: none;
-  border-radius: 0.5rem;
-  background: var(--bg-secondary);
-  color: var(--text);
-  cursor: pointer;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-}
+    font-size: 1.6rem;
+    padding: 0.5em;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--bg-secondary);
+    color: var(--text);
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
 }
 
 /* Tema claro/escuro */
@@ -161,6 +170,7 @@ body {
   bottom: 20px;
   right: 20px;
 }
+
 .dark-mode {
   --bg: #111;
   --bg-secondary: #222;
@@ -168,7 +178,8 @@ body {
   --text-secondary: #aaa;
 }
 
-.dark-mode, .dark-mode body {
+.dark-mode,
+.dark-mode body {
   --bg: #111 !important;
   --bg-secondary: #222 !important;
   --text: #fff !important;
@@ -179,30 +190,33 @@ body {
 
 .iframe-overlay {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 10;
-  /*background: rgba(0, 0, 0, 0.255);*/
-  /*pointer-events: auto; /* permite eventos na overlay */*/
+  background: rgba(0, 0, 0, 0.255);
+  pointer-events: none;
 }
 
-/* Furo canto superior direito (configurações) */
+/* canto superior direito (configurações) */
 .iframe-overlay .settings-area {
   position: absolute;
   right: 0;
   top: 0;
   width: 50px;
   height: 50px;
-  /*background: rgba(225, 255, 0, 0.282);*/
-  /*pointer-events: auto;*/
+  background: rgba(225, 255, 0, 0.282);
+  pointer-events: auto;
 }
-/* Furo canto inferior direito (pular anúncio) */
+
+/* canto inferior direito (pular anúncio) */
 .iframe-overlay .skip-area {
   position: absolute;
   right: 0;
   bottom: 0;
   width: 130px;
   height: 60px;
-  /*background: rgba(225, 255, 0, 0.282);*/
-  /*pointer-events: auto;*/
+  background: rgba(225, 255, 0, 0.282);
+  pointer-events: auto;
 }
