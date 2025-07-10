@@ -182,40 +182,27 @@ body {
   top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 10;
-  pointer-events: auto;
+  pointer-events: none; /* bloqueia tudo por padrão */
 }
 
-/* Permite clique apenas nos cantos dos botões do YouTube */
-.iframe-overlay::before,
-.iframe-overlay::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-}
-
-/* Área do botão de pular anúncio (canto inferior direito, ~120x50px) */
+/* Furo canto inferior direito (pular anúncio) */
 .iframe-overlay .skip-area {
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 120px;
+  width: 100px;
   height: 50px;
-  pointer-events: none;
-  background: rgba(132, 255, 0, 0.405);
+  pointer-events: auto; /* libera clique */
+  background: red;
 }
 
-/* Área do botão de configuração (canto superior direito, ~60x60px) */
+/* Furo canto superior direito (configurações) */
 .iframe-overlay .settings-area {
   position: absolute;
   right: 0;
   top: 0;
   width: 100px;
-  height: 60px;
-  pointer-events: none;
-  background: rgba(255, 0, 0, 0.34);
-}
-
-/* O overlay bloqueia tudo, exceto as áreas acima */
-.iframe-overlay {
-  /* Cria "buracos" usando pointer-events: none nas áreas permitidas */
+  height: 50px;
+  pointer-events: auto; /* libera clique */
+  background: red;
 }

@@ -58,7 +58,6 @@ window.onYouTubeIframeAPIReady = function () {
       onStateChange: onPlayerStateChange
     }
   });
-  configurarOverlayIframe();
 };
 
 // Controles
@@ -181,50 +180,44 @@ openPlaylistBtn.addEventListener('click', () => {
   });
 });
 
+
 // Após o player ser criado, configure a overlay
 function configurarOverlayIframe() {
   const overlay = document.querySelector('.iframe-overlay');
   if (!overlay) return;
 
-  // Limpa overlay
   overlay.innerHTML = '';
 
   // Cria áreas "furadas" para os botões do YouTube
   const skipArea = document.createElement('div');
   skipArea.className = 'skip-area';
+  skipArea.style.position = 'absolute';
+  skipArea.style.right = '0';
+  skipArea.style.bottom = '0';
+  skipArea.style.width = '120px';
+  skipArea.style.height = '50px';
+  skipArea.style.pointerEvents = 'auto';
+  skipArea.style.background = 'transparent';
   overlay.appendChild(skipArea);
 
   const settingsArea = document.createElement('div');
   settingsArea.className = 'settings-area';
+  settingsArea.style.position = 'absolute';
+  settingsArea.style.right = '0';
+  settingsArea.style.top = '0';
+  settingsArea.style.width = '100px';
+  settingsArea.style.height = '60px';
+  settingsArea.style.pointerEvents = 'auto';
+  settingsArea.style.background = 'transparent';
   overlay.appendChild(settingsArea);
 
   // O overlay bloqueia tudo, exceto as áreas acima
-  // Permite clique apenas nas áreas dos botões
   overlay.addEventListener('pointerdown', function(e) {
-    const { left, top, width, height } = overlay.getBoundingClientRect();
-    const x = e.clientX - left;
-    const y = e.clientY - top;
-
-    // Área do botão de pular anúncio (ajuste se necessário)
-    const skipBtn = {
-      x0: overlay.offsetWidth - 120,
-      y0: overlay.offsetHeight - 50,
-      x1: overlay.offsetWidth,
-      y1: overlay.offsetHeight
-    };
-    // Área do botão de configuração (ajuste se necessário)
-    const settingsBtn = {
-      x0: overlay.offsetWidth - 60,
-      y0: 0,
-      x1: overlay.offsetWidth,
-      y1: 60
-    };
-
-    // Permite clique apenas nas áreas dos botões
-    const inSkip = x >= skipBtn.x0 && x <= skipBtn.x1 && y >= skipBtn.y0 && y <= skipBtn.y1;
-    const inSettings = x >= settingsBtn.x0 && x <= settingsBtn.x1 && y >= settingsBtn.y0 && y <= settingsBtn.y1;
-
-    if (!(inSkip || inSettings)) {
+    // Se o alvo não for uma das áreas liberadas, bloqueia
+    if (
+      !skipArea.contains(e.target) &&
+      !settingsArea.contains(e.target)
+    ) {
       e.preventDefault();
       e.stopPropagation();
       return false;
