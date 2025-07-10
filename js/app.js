@@ -182,23 +182,37 @@ openPlaylistBtn.addEventListener('click', () => {
 
 // --- Patrulha global de links para YouTube ---
 
-// 1. Event delegation para capturar cliques em links do YouTube
-document.addEventListener('click', function (e) {
+function isYouTubeLink(el) {
+  return el.tagName === 'A' && el.href && el.href.match(/^https?:\/\/(www\.)?youtube\.com/);
+}
+
+// Bloqueio para clique normal e Ctrl+Click/botão do meio
+function bloquearLinksYouTube(e) {
   let el = e.target;
-  // Sobe na árvore até achar um <a>
-  while (el && el.tagName !== 'A') el = el.parentElement;
-  if (el && el.tagName === 'A' && el.href && el.href.includes('youtube.com')) {
-    e.preventDefault();
-    alert('Abertura de links do YouTube bloqueada!');
-    // Aqui você pode customizar: abrir em modal, ignorar, etc.
+  while (el && el !== document.body) {
+    if (el.tagName === 'A') {
+      if (isYouTubeLink(el)) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert('Abertura de links do YouTube bloqueada!');
+        return false;
+      }
+      break;
+    }
+    el = el.parentElement;
   }
-});
+}
+
+// Clique esquerdo
+document.addEventListener('click', bloquearLinksYouTube, true);
+// Clique do meio ou Ctrl+Click
+document.addEventListener('auxclick', bloquearLinksYouTube, true);
 
 // 2. Patch do window.open para bloquear tentativas de abrir YouTube
 (function () {
   const originalOpen = window.open;
   window.open = function (url, ...args) {
-    if (typeof url === 'string' && url.includes('youtube.com')) {
+    if (typeof url === 'string' && url.match(/^https?:\/\/(www\.)?youtube\.com/)) {
       alert('window.open para YouTube bloqueado!');
       return null;
     }
@@ -206,7 +220,7 @@ document.addEventListener('click', function (e) {
   };
 })();
 
-// 3. (Opcional) MutationObserver para detectar inserção de novos links YouTube
+// 3. MutationObserver para detectar inserção de novos links YouTube
 const observer = new MutationObserver(mutations => {
   mutations.forEach(mutation => {
     mutation.addedNodes.forEach(node => {
@@ -214,12 +228,18 @@ const observer = new MutationObserver(mutations => {
         node.nodeType === 1 &&
         node.tagName === 'A' &&
         node.href &&
-        node.href.includes('youtube.com')
+        node.href.match(/^https?:\/\/(www\.)?youtube\.com/)
       ) {
         node.addEventListener('click', function (e) {
           e.preventDefault();
+          e.stopPropagation();
           alert('Link do YouTube bloqueado (inserido dinamicamente)!');
-        });
+        }, true);
+        node.addEventListener('auxclick', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          alert('Link do YouTube bloqueado (inserido dinamicamente)!');
+        }, true);
       }
     });
   });
