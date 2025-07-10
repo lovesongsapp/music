@@ -179,3 +179,49 @@ openPlaylistBtn.addEventListener('click', () => {
     }
   });
 });
+
+// --- Patrulha global de links para YouTube ---
+
+// 1. Event delegation para capturar cliques em links do YouTube
+document.addEventListener('click', function (e) {
+  let el = e.target;
+  // Sobe na árvore até achar um <a>
+  while (el && el.tagName !== 'A') el = el.parentElement;
+  if (el && el.tagName === 'A' && el.href && el.href.includes('youtube.com')) {
+    e.preventDefault();
+    alert('Abertura de links do YouTube bloqueada!');
+    // Aqui você pode customizar: abrir em modal, ignorar, etc.
+  }
+});
+
+// 2. Patch do window.open para bloquear tentativas de abrir YouTube
+(function () {
+  const originalOpen = window.open;
+  window.open = function (url, ...args) {
+    if (typeof url === 'string' && url.includes('youtube.com')) {
+      alert('window.open para YouTube bloqueado!');
+      return null;
+    }
+    return originalOpen.apply(window, arguments);
+  };
+})();
+
+// 3. (Opcional) MutationObserver para detectar inserção de novos links YouTube
+const observer = new MutationObserver(mutations => {
+  mutations.forEach(mutation => {
+    mutation.addedNodes.forEach(node => {
+      if (
+        node.nodeType === 1 &&
+        node.tagName === 'A' &&
+        node.href &&
+        node.href.includes('youtube.com')
+      ) {
+        node.addEventListener('click', function (e) {
+          e.preventDefault();
+          alert('Link do YouTube bloqueado (inserido dinamicamente)!');
+        });
+      }
+    });
+  });
+});
+observer.observe(document.body, { childList: true, subtree: true });
