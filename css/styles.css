@@ -182,6 +182,7 @@ body {
   top: 0; left: 0;
   width: 100%; height: 100%;
   z-index: 10;
+  background: rgba(0, 0, 0, 0.255); /* fundo semi-transparente */
   pointer-events: none; /* bloqueia tudo por padrão */
 }
 
@@ -192,8 +193,7 @@ body {
   bottom: 0;
   width: 100px;
   height: 50px;
-  pointer-events: auto; /* libera clique */
-  background: red;
+  background: rgba(225, 255, 0, 0.367);
 }
 
 /* Furo canto superior direito (configurações) */
@@ -203,6 +203,5 @@ body {
   top: 0;
   width: 100px;
   height: 50px;
-  pointer-events: auto; /* libera clique */
-  background: red;
+ background: rgba(225, 255, 0, 0.367);
 }
